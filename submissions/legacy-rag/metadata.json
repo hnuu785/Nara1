@@ -1,0 +1,14 @@
+{
+  "name": "legacy-rag",
+  "archived_at": "2026-09-16T12:10:48.773305+00:00",
+  "note": "기존 RAG ZIP 원본 보관. 현재 코드와 일치하며 실제 업로드 파일·점수 연결은 미확인.",
+  "source": "/Users/cho/Developer/Nara/submit.zip",
+  "sha256": "230bf74e9f5084e9a9aea8e4b4c5ca4e75a6fb10ad1cfd51e0cd06b7a0c5d5e8",
+  "files": {
+    "script.py": "054f7b9c537e28e6a24fdf58b58801d15f6445bd3fc5b84e987155a8d91173c8",
+    "requirements.txt": "d0290b0dceafb0aa74fffd0a898d4ecb96a7f6549da897a8050358e4c479939b"
+  },
+  "head_at_archive": "d75c97f2bc7af968e476347e65195954ccc6454a",
+  "status_at_archive": "M RAG_NOTES.md\n?? COMPETITION_CONTEXT.md\n?? submissions/\n?? tools/",
+  "submission_status": "unknown"
+}
