@@ -1,2 +1,9 @@
 open/train_unlabeled.jsonl.gz
 .DS_Store
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
