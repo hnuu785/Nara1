@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import csv
 import gzip
+import glob
 import io
 import json
 import os
@@ -55,6 +56,9 @@ MAX_TOKENS = 1536                       # 구조화 출력 토큰 예산
 PROMPT_BUDGET = MAX_MODEL_LEN - MAX_TOKENS
 EVIDENCE_MAX = 500                      # 근거 문구 셀 글자 수 상한
 QUANT = "int8_per_channel_weight_only"  # 평가 서버 양자화 설정
+RAG_TOPK = 8
+RAG_CHARS = 8000
+RAG_QUERY_CHARS = 3000
 
 
 def log(msg: str) -> None:
@@ -168,7 +172,74 @@ def format_meta(rec: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-# ===== 3. 항목표·디코딩 스키마 =====
+# ===== 3. 제공 법령 검색 (공식 RAG 예제의 BM25 방식) =====
+# 출처: https://dacon.io/competitions/official/236754/codeshare/14155
+ARTICLE_START = re.compile(r"^[ \t]*제\s?\d+조(?:의\s?\d+)?\s*\(", re.M)
+
+
+def rag_tokenize(text: str) -> List[str]:
+    text = unicodedata.normalize("NFC", text)
+    words = re.findall(r"[가-힣]{2,}|[A-Za-z]{2,}|\d{2,}", text)
+    tokens = []
+    for word in words:
+        tokens.append(word)
+        if len(word) > 2:
+            tokens.extend(word[i:i + 2] for i in range(len(word) - 1))
+    return tokens
+
+
+class LawIndex:
+    """배포된 법령 txt만 색인합니다. 평가 공고는 검색 질의로만 사용합니다."""
+
+    def __init__(self, data_dir: str):
+        from rank_bm25 import BM25Okapi
+
+        paths = sorted(glob.glob(os.path.join(data_dir, "법령패키지", "법령", "*.txt")),
+                       key=lambda p: unicodedata.normalize("NFC", p))
+        if not paths:
+            raise FileNotFoundError("RAG용 data/법령패키지/법령/*.txt가 없습니다")
+        self.articles = []
+        for path in paths:
+            law = unicodedata.normalize("NFC", os.path.splitext(os.path.basename(path))[0])
+            with io.open(path, encoding="utf-8") as f:
+                text = unicodedata.normalize("NFC", f.read())
+            cuts = [m.start() for m in ARTICLE_START.finditer(text)]
+            # 조문 형식이 없는 행정규칙도 검색 대상으로 유지합니다.
+            starts = cuts or [0]
+            for start, end in zip(starts, starts[1:] + [len(text)]):
+                body = text[start:end].strip()
+                if rag_tokenize(body):
+                    self.articles.append((law, body))
+        if not self.articles:
+            raise ValueError("RAG용 법령 텍스트가 비어 있습니다")
+        self.bm25 = BM25Okapi([rag_tokenize(body) for _, body in self.articles])
+        log(f"RAG 법령 {len(paths)}개 · 검색 조각 {len(self.articles)}개 색인")
+
+    def search(self, rec: Dict[str, Any], topk: int, max_chars: int,
+               query_chars: int = RAG_QUERY_CHARS) -> str:
+        query = "\n".join(d["text"] for d in rec["docs"] if d["type"] == "공고문")[:query_chars]
+        tokens = rag_tokenize(query)
+        if not tokens or topk <= 0 or max_chars <= 0:
+            return ""
+        scores = self.bm25.get_scores(tokens)
+        order = sorted(range(len(scores)), key=lambda i: (-scores[i], i))[:topk]
+        blocks, used = [], 0
+        for i in order:
+            if scores[i] <= 0:
+                continue
+            law, body = self.articles[i]
+            separator = 2 if blocks else 0
+            remaining = max_chars - used - separator
+            heading = f"[{law}]\n"
+            if remaining <= len(heading):
+                break
+            block = (heading + body)[:remaining]
+            blocks.append(block)
+            used += separator + len(block)
+        return "\n\n".join(blocks)
+
+
+# ===== 3b. 항목표·디코딩 스키마 =====
 # data/에 항목표.json·정답스키마_디코딩.json이 동봉됩니다.
 # 항목명·근거조문·비고는 항목표.json 에 있으니 여기에 사본을 두지 않습니다.
 
@@ -229,18 +300,24 @@ def build_system_prompt(tbl: Dict[str, Dict[str, Any]]) -> str:
     return SYSTEM_HEAD + "\n" + "\n".join(lines) + "\n" + SYSTEM_TAIL
 
 
-def build_user_prompt(rec: Dict[str, Any], max_chars: int) -> str:
-    return (
+def build_user_prompt(rec: Dict[str, Any], max_chars: int, law_context: str = "") -> str:
+    reference = (
+        "[검색된 법령 조문 — 판정 참고자료]\n"
+        "관련성과 적용 조건을 확인해 사용한다. 근거문구는 이 법령이 아니라 아래 공고·첨부 문서에서만 인용한다.\n"
+        f"{law_context}\n\n"
+    ) if law_context else ""
+    return reference + (
         f"[공고 ID] {rec['id']}\n\n"
         f"[나라장터 입력 메타]\n{format_meta(rec)}\n\n"
         f"[문서]\n{build_context(rec, max_chars=max_chars)}\n"
     )
 
 
-def build_messages(rec: Dict[str, Any], system_prompt: str, max_chars: int) -> List[Dict[str, str]]:
+def build_messages(rec: Dict[str, Any], system_prompt: str, max_chars: int,
+                   law_context: str = "") -> List[Dict[str, str]]:
     return [
         {"role": "system", "content": system_prompt},
-        {"role": "user", "content": build_user_prompt(rec, max_chars)},
+        {"role": "user", "content": build_user_prompt(rec, max_chars, law_context)},
     ]
 
 
@@ -301,14 +378,20 @@ class MockRunner:
 
 
 def fit_to_budget(rec: Dict[str, Any], system_prompt: str, runner, max_chars: int,
-                  budget: int = PROMPT_BUDGET) -> Tuple[List[Dict[str, str]], int, int]:
-    """설정된 토큰 예산에 맞게 문서 글자 수를 조정합니다."""
+                  budget: int = PROMPT_BUDGET, law_context: str = "") -> Tuple[List[Dict[str, str]], int, int]:
+    """검색 법령까지 포함해 계수하고, 초과 시 법령부터 줄여 공고 공간을 보존합니다."""
     while True:
-        msgs = build_messages(rec, system_prompt, max_chars)
+        msgs = build_messages(rec, system_prompt, max_chars, law_context)
         n = runner.count_tokens(msgs)
-        if n <= budget or max_chars <= 2000:
+        if n <= budget:
             return msgs, n, max_chars
-        max_chars = int(max_chars * min(0.85, budget / n * 0.95))
+        if law_context:
+            keep = int(len(law_context) * min(0.75, budget / n * 0.90))
+            law_context = law_context[:keep] if keep >= 256 else ""
+        elif max_chars > 256:
+            max_chars = max(256, int(max_chars * min(0.85, budget / n * 0.95)))
+        else:
+            raise ValueError(f"공고 {rec['id']}: 최소 입력도 토큰 예산 초과 ({n} > {budget})")
 
 
 def run_chunk(runner, batch: List[List[Dict[str, str]]]) -> List[str]:
@@ -456,7 +539,9 @@ def validate_csv(path: str, expected_ids: List[str]) -> List[str]:
 
 # ===== 8. 실행 =====
 def run(input_path: str, out_path: str, runner_cls, limit: Optional[int], chunk: int,
-        max_chars: int, data_dir: str, **runner_kw) -> Dict[str, Any]:
+        max_chars: int, data_dir: str, rag: bool = True, rag_topk: int = RAG_TOPK,
+        rag_chars: int = RAG_CHARS, rag_query_chars: int = RAG_QUERY_CHARS,
+        **runner_kw) -> Dict[str, Any]:
     t_all = time.time()
     recs = list(iter_records(input_path, limit=limit))
     log(f"입력 {len(recs)}건 ← {input_path}")
@@ -466,17 +551,24 @@ def run(input_path: str, out_path: str, runner_cls, limit: Optional[int], chunk:
 
     tbl, schema = item_table(data_dir), decode_schema(data_dir)
     system_prompt = build_system_prompt(tbl)
+    law_index = LawIndex(data_dir) if rag else None
+    budget = MAX_MODEL_LEN - runner_kw.get("max_tokens", MAX_TOKENS)
+    if budget <= 0:
+        raise ValueError("출력 토큰 예산은 모델 컨텍스트보다 작아야 합니다")
     runner = runner_cls(schema, **runner_kw)
     log(f"모델 로드 {runner.load_seconds:.1f}s")
 
     # 전건 메시지 구성(길이 예산 맞춤)
-    msgs_all, shrunk, ntok = [], 0, []
+    msgs_all, shrunk, ntok, rag_hits = [], 0, [], 0
     for rec in recs:
-        m, n, mc = fit_to_budget(rec, system_prompt, runner, max_chars)
+        law_context = law_index.search(rec, rag_topk, rag_chars, rag_query_chars) if law_index else ""
+        rag_hits += bool(law_context)
+        m, n, mc = fit_to_budget(rec, system_prompt, runner, max_chars, budget, law_context)
         msgs_all.append(m)
         ntok.append(n)
         shrunk += int(mc < max_chars)
     log(f"프롬프트 토큰 중앙값 {sorted(ntok)[len(ntok) // 2]:,} · 최대 {max(ntok):,} · 예산 축소 {shrunk}건")
+    log(f"RAG {'ON' if rag else 'OFF'} · 검색 결과가 있는 공고 {rag_hits}/{len(recs)}")
 
     # 배치 추론
     t_inf = time.time()
@@ -512,6 +604,7 @@ def run(input_path: str, out_path: str, runner_cls, limit: Optional[int], chunk:
         "유효JSON": len(recs) - invalid, "메운_항목수": filled,
         "근거_유지": ev_kept, "근거_원문불일치_폐기": ev_dropped,
         "출력": out_path, "자가검증": "PASS" if not errs else errs,
+        "RAG": rag, "RAG_검색건수": rag_hits,
     }
     log(json.dumps(report, ensure_ascii=False))
     if invalid:
@@ -534,7 +627,13 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=MAX_TOKENS)
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--mock", action="store_true", help="모델 없이 흐름만 확인")
+    ap.add_argument("--no-rag", action="store_true", help="법령 검색을 끄고 기존 기본형과 비교")
+    ap.add_argument("--rag-topk", type=int, default=RAG_TOPK)
+    ap.add_argument("--rag-chars", type=int, default=RAG_CHARS)
+    ap.add_argument("--rag-query-chars", type=int, default=RAG_QUERY_CHARS)
     a = ap.parse_args()
+    if min(a.chunk, a.max_chars, a.max_tokens, a.rag_topk, a.rag_chars, a.rag_query_chars) <= 0:
+        ap.error("청크·글자·토큰·검색 개수 설정은 양수여야 합니다")
 
     input_path = a.input or os.path.join(a.data_dir, "test.jsonl.gz")
     out_path = os.path.join(a.output_dir, "submission.csv")
@@ -542,7 +641,9 @@ def main() -> int:
     runner_kw = {} if a.mock else dict(model_dir=a.model_dir, quant=quant, max_tokens=a.max_tokens,
                                        seed=SEED, gpu_mem=a.gpu_mem, tp=a.tp)
     report = run(input_path, out_path, MockRunner if a.mock else VLLMRunner,
-                 limit=a.limit, chunk=a.chunk, max_chars=a.max_chars, data_dir=a.data_dir, **runner_kw)
+                 limit=a.limit, chunk=a.chunk, max_chars=a.max_chars, data_dir=a.data_dir,
+                 rag=not a.no_rag, rag_topk=a.rag_topk, rag_chars=a.rag_chars,
+                 rag_query_chars=a.rag_query_chars, **runner_kw)
     return 0 if report.get("자가검증") in ("PASS", None) else 1
 
 
