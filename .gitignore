@@ -1,6 +1,9 @@
 open/train_unlabeled.jsonl.gz
 .DS_Store
 
+# Regenerated submission packages (versions are kept in Git)
+.artifacts/
+
 # Python cache files
 __pycache__/
 *.py[cod]

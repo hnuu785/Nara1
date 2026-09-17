@@ -29,13 +29,12 @@ python open/baseline/script.py --mock --data-dir open/data --input open/dev.json
 
 ## 제출
 
-새 제출본은 `python3 tools/submissions.py save <실험이름> --note "변경 내용"`으로
-만든 뒤 출력된 `submissions/<실험이름>/submit.zip`을 데이콘 제출 페이지에 업로드합니다.
-버전별 코드·점수 기록 방법은 [제출 기록 안내](submissions/README.md)를 참고하세요.
+실험마다 브랜치를 만들고 제출할 커밋에 태그를 남깁니다.
+태그에서 생성한 `.artifacts/submit.zip`을 데이콘 제출 페이지에 업로드합니다.
+명령과 점수 기록 방법은 [실험 관리 안내](EXPERIMENTS.md)를 참고하세요.
 압축파일 최상위에는 `script.py`와 `requirements.txt`만 포함합니다.
 데이터와 모델은 평가 서버에서 제공되므로 압축파일에 포함하지 않습니다.
-기존 루트 압축파일 두 개는 `submissions/legacy-before-rag/`,
-`submissions/legacy-rag/`에도 원본 그대로 보관했습니다.
+기존 루트 압축파일 `submit.zip`, `submit_before_rag.zip`은 원본을 유지합니다.
 
 ## 검증 결과 (2026-09-14)
 
