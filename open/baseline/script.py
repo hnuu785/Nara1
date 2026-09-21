@@ -30,7 +30,10 @@ import re
 import sys
 import time
 import unicodedata
+import urllib.error
+import urllib.request
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
 DATA_DIR = os.environ.get("PPS_DATA_DIR", "./data")
@@ -377,6 +380,72 @@ class MockRunner:
         return [self._one(m) for m in batch]
 
 
+class APIRunner:
+    """RunPod 등의 vLLM OpenAI 호환 API 서버(HTTP)로 추론합니다."""
+    load_seconds = 0.0
+
+    def __init__(self, schema: Dict[str, Any], api_url: str = "http://localhost:8000/v1",
+                 model_dir: str = "/workspace/models/gemma-4-26B-A4B-it",
+                 max_tokens: int = MAX_TOKENS, seed: int = SEED, **_):
+        self.schema = schema
+        self.api_url = api_url.rstrip("/")
+        if not self.api_url.endswith("/v1"):
+            self.api_url += "/v1"
+        self.max_tokens = max_tokens
+        self.seed = seed
+
+        # 서버에서 사용 가능한 모델명 자동 감지
+        self.model = model_dir
+        try:
+            req = urllib.request.Request(f"{self.api_url}/models")
+            with urllib.request.urlopen(req, timeout=3) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                if data.get("data") and len(data["data"]) > 0:
+                    self.model = data["data"][0]["id"]
+        except Exception as e:
+            log(f"모델 목록 조회 생략 ({e}), 지정 모델명 사용: {self.model}")
+
+        log(f"APIRunner 연결: {self.api_url} · 모델 {self.model} · max_tokens={max_tokens}")
+
+    def count_tokens(self, messages: List[Dict[str, str]]) -> int:
+        return sum(len(m["content"]) for m in messages) // 2
+
+    def _one(self, messages: List[Dict[str, str]]) -> str:
+        url = f"{self.api_url}/chat/completions"
+        payload: Dict[str, Any] = {
+            "model": self.model,
+            "messages": messages,
+            "temperature": 0.0,
+            "max_tokens": self.max_tokens,
+            "seed": self.seed,
+        }
+        if self.schema:
+            payload["guided_json"] = self.schema
+
+        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=180) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                choices = data.get("choices", [])
+                if choices and "message" in choices[0]:
+                    return choices[0]["message"].get("content", "")
+                return ""
+        except urllib.error.HTTPError as e:
+            err_msg = e.read().decode("utf-8", errors="ignore")
+            log(f"API HTTP {e.code} 에러: {err_msg[:200]}")
+            return ""
+        except Exception as e:
+            log(f"API 요청 실패: {type(e).__name__}: {str(e)[:160]}")
+            return ""
+
+    def chat(self, batch: List[List[Dict[str, str]]]) -> List[str]:
+        if len(batch) == 1:
+            return [self._one(batch[0])]
+        with ThreadPoolExecutor(max_workers=min(len(batch), 8)) as ex:
+            return list(ex.map(self._one, batch))
+
+
 def fit_to_budget(rec: Dict[str, Any], system_prompt: str, runner, max_chars: int,
                   budget: int = PROMPT_BUDGET, law_context: str = "") -> Tuple[List[Dict[str, str]], int, int]:
     """검색 법령까지 포함해 계수하고, 초과 시 법령부터 줄여 공고 공간을 보존합니다."""
@@ -537,11 +606,41 @@ def validate_csv(path: str, expected_ids: List[str]) -> List[str]:
     return errs
 
 
+def evaluate_rows(rows: List[Dict[str, Any]], labels_path: str) -> Dict[str, Any]:
+    """예측 rows와 정답 labels.csv를 대조하여 Macro F1 및 항목별 점수를 계산합니다."""
+    with io.open(labels_path, "r", encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        truth = {r["id"]: r for r in reader}
+
+    scores = []
+    details = {}
+    for v in ITEMS:
+        tp = fp = fn = 0
+        for r in rows:
+            doc_id = r["id"]
+            if doc_id not in truth:
+                continue
+            pred = int(r.get(v, 0))
+            gold = int(truth[doc_id].get(v, 0))
+            if pred == 1 and gold == 1:
+                tp += 1
+            elif pred == 1 and gold == 0:
+                fp += 1
+            elif pred == 0 and gold == 1:
+                fn += 1
+        f1 = 2 * tp / (2 * tp + fp + fn) if (2 * tp + fp + fn) > 0 else 0.0
+        scores.append(f1)
+        details[v] = {"TP": tp, "FP": fp, "FN": fn, "F1": round(f1, 4)}
+
+    macro_f1 = round(sum(scores) / len(scores), 6) if scores else 0.0
+    return {"MacroF1": macro_f1, "items": details}
+
+
 # ===== 8. 실행 =====
 def run(input_path: str, out_path: str, runner_cls, limit: Optional[int], chunk: int,
         max_chars: int, data_dir: str, rag: bool = True, rag_topk: int = RAG_TOPK,
         rag_chars: int = RAG_CHARS, rag_query_chars: int = RAG_QUERY_CHARS,
-        **runner_kw) -> Dict[str, Any]:
+        labels_path: Optional[str] = None, **runner_kw) -> Dict[str, Any]:
     t_all = time.time()
     recs = list(iter_records(input_path, limit=limit))
     log(f"입력 {len(recs)}건 ← {input_path}")
@@ -606,6 +705,19 @@ def run(input_path: str, out_path: str, runner_cls, limit: Optional[int], chunk:
         "출력": out_path, "자가검증": "PASS" if not errs else errs,
         "RAG": rag, "RAG_검색건수": rag_hits,
     }
+    if labels_path:
+        eval_res = evaluate_rows(rows, labels_path)
+        report["dev평가"] = eval_res
+        log("\n==================== [dev 채점 결과] ====================")
+        log(f"★ Macro F1 (대회 공식 지표): {eval_res['MacroF1']:.6f}")
+        log("-------------------------------------------------------")
+        log(f"{'항목':<6} | {'TP':<4} | {'FP':<4} | {'FN':<4} | {'F1':<6}")
+        log("-------------------------------------------------------")
+        for v in ITEMS:
+            d = eval_res["items"][v]
+            if d["TP"] or d["FP"] or d["FN"]:
+                log(f"{v:<6} | {d['TP']:<4} | {d['FP']:<4} | {d['FN']:<4} | {d['F1']:<6.4f}")
+        log("=======================================================\n")
     log(json.dumps(report, ensure_ascii=False))
     if invalid:
         log("[주의] 유효 JSON이 아닌 출력이 있습니다. 구조화 출력 설정과 JSON Schema를 확인하세요.")
@@ -617,6 +729,7 @@ def main() -> int:
     ap.add_argument("--data-dir", default=DATA_DIR)
     ap.add_argument("--output-dir", default=OUTPUT_DIR)
     ap.add_argument("--input", default=None, help="기본 = <data-dir>/test.jsonl.gz")
+    ap.add_argument("--labels", default=None, help="채점용 정답 라벨 CSV 경로 (예: open/dev_labels.csv)")
     ap.add_argument("--model-dir", default=MODEL_DIR, help="로컬에서는 HF ID(google/gemma-4-26B-A4B-it)도 가능")
     ap.add_argument("--quantization", default=os.environ.get("PPS_QUANT", QUANT),
                     help="채점 서버 = int8_per_channel_weight_only · 'none'이면 미양자화")
@@ -627,6 +740,7 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=MAX_TOKENS)
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--mock", action="store_true", help="모델 없이 흐름만 확인")
+    ap.add_argument("--api-url", default=None, help="RunPod 등의 vLLM API 서버 주소 (예: http://localhost:8000/v1)")
     ap.add_argument("--no-rag", action="store_true", help="법령 검색을 끄고 기존 기본형과 비교")
     ap.add_argument("--rag-topk", type=int, default=RAG_TOPK)
     ap.add_argument("--rag-chars", type=int, default=RAG_CHARS)
@@ -638,12 +752,21 @@ def main() -> int:
     input_path = a.input or os.path.join(a.data_dir, "test.jsonl.gz")
     out_path = os.path.join(a.output_dir, "submission.csv")
     quant = None if str(a.quantization).lower() in ("none", "") else a.quantization
-    runner_kw = {} if a.mock else dict(model_dir=a.model_dir, quant=quant, max_tokens=a.max_tokens,
-                                       seed=SEED, gpu_mem=a.gpu_mem, tp=a.tp)
-    report = run(input_path, out_path, MockRunner if a.mock else VLLMRunner,
+    if a.mock:
+        runner_cls = MockRunner
+        runner_kw = {}
+    elif a.api_url:
+        runner_cls = APIRunner
+        runner_kw = dict(api_url=a.api_url, model_dir=a.model_dir, max_tokens=a.max_tokens, seed=SEED)
+    else:
+        runner_cls = VLLMRunner
+        runner_kw = dict(model_dir=a.model_dir, quant=quant, max_tokens=a.max_tokens,
+                         seed=SEED, gpu_mem=a.gpu_mem, tp=a.tp)
+
+    report = run(input_path, out_path, runner_cls,
                  limit=a.limit, chunk=a.chunk, max_chars=a.max_chars, data_dir=a.data_dir,
                  rag=not a.no_rag, rag_topk=a.rag_topk, rag_chars=a.rag_chars,
-                 rag_query_chars=a.rag_query_chars, **runner_kw)
+                 rag_query_chars=a.rag_query_chars, labels_path=a.labels, **runner_kw)
     return 0 if report.get("자가검증") in ("PASS", None) else 1
 
 
