@@ -10,7 +10,7 @@
 배포 폴더에서 다음 명령을 실행하면 모델을 불러오지 않고 입력부터 제출 파일 생성까지의 흐름을 확인할 수 있습니다.
 
 ```bash
-python3 baseline/script.py --mock
+python3 script.py --mock
 ```
 
 생성 파일은 `output/submission.csv`입니다.
@@ -26,7 +26,7 @@ python3 baseline/script.py --mock
 | `data/정답스키마_디코딩.json` | — | 베이스라인의 구조화 출력에 사용하는 JSON Schema입니다. 정답 값은 포함하지 않습니다. |
 | `data/법령패키지/` | — | 판정 기준이 되는 법령·행정규칙 텍스트와 고시 자료입니다. 텍스트 변환이 제한된 구간은 각 파일에 표시되어 있습니다. |
 | `sample_submission.csv` | 10행 | 49열 제출 형식 예시입니다. |
-| `baseline/` | — | `script.py`와 `requirements.txt`로 구성된 코드 제출 예시입니다. |
+| `script.py` · `requirements.txt` | — | 코드 제출용 메인 추론 스크립트 및 의존성 파일입니다. |
 
 평가 서버에서는 실제 평가 입력이 `data/test.jsonl.gz` 경로에 제공됩니다. 입력 파일의 `id`와 행 수를 읽어 그대로 출력해야 하며, 샘플의 ID 형식이나 건수를 하드코딩해서는 안 됩니다.
 
