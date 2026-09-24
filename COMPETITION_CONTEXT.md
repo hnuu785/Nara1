@@ -35,7 +35,7 @@ Score = (F1_1 + ... + F1_24) / 24
 
 ### 현재 알려진 성능
 
-사용자가 2026-09-16에 보고한 `open/baseline/script.py` 제출 점수: **0.1979200359**.
+사용자가 2026-09-16에 보고한 `baseline/script.py` 제출 점수: **0.1979200359**.
 
 이 값은 사용자 보고값이며, 이 문서를 작성하면서 제출 내역이나 서버 예측 결과를 직접 확인한 것은 아니다. 총점만으로 항목별 성능, 오탐/누락 비율, 낮은 점수의 원인을 확정할 수 없다. 진단하려면 dev에 대한 실제 모델 예측과 항목별 TP/FP/FN/F1을 확인해야 한다.
 
@@ -43,12 +43,12 @@ Score = (F1_1 + ... + F1_24) / 24
 
 | 자료 | 규모 및 용도 |
 |---|---|
-| `open/train_unlabeled.jsonl.gz` | 무라벨 공고 20,000건. 라벨 부재를 비위반으로 해석하면 안 된다. |
-| `open/dev.jsonl.gz`, `open/dev_labels.csv` | 라벨 예시 200건. 평가 데이터 분포를 대표하지 않는다. |
-| `open/data/test.jsonl.gz` | 로컬 형식 확인용 샘플 10건. 서버에서 실제 평가 입력으로 교체된다. |
-| `open/data/항목표.json` | 24개 항목명, 적용 법령·조문, 부재탐지 여부, 비고. 기준일 2026-07-27. |
-| `open/data/정답스키마_디코딩.json` | 구조화 출력 스키마. 정답 값은 없다. |
-| `open/data/법령패키지/` | 판정 기준 법령·행정규칙 및 고시 자료. |
+| `train_unlabeled.jsonl.gz` | 무라벨 공고 20,000건. 라벨 부재를 비위반으로 해석하면 안 된다. |
+| `dev.jsonl.gz`, `dev_labels.csv` | 라벨 예시 200건. 평가 데이터 분포를 대표하지 않는다. |
+| `data/test.jsonl.gz` | 로컬 형식 확인용 샘플 10건. 서버에서 실제 평가 입력으로 교체된다. |
+| `data/항목표.json` | 24개 항목명, 적용 법령·조문, 부재탐지 여부, 비고. 기준일 2026-07-27. |
+| `data/정답스키마_디코딩.json` | 구조화 출력 스키마. 정답 값은 없다. |
+| `data/법령패키지/` | 판정 기준 법령·행정규칙 및 고시 자료. |
 
 입력 JSONL 한 줄이 공고 1건이다.
 
@@ -115,8 +115,7 @@ Score = (F1_1 + ... + F1_24) / 24
 
 ## 6. 현재 코드 상태와 해석상의 주의점
 
-현재 `open/baseline/script.py`는 법령 BM25 검색을 결합한 추론 파이프라인이다.
-
+현재 `baseline/script.py`는 법령 BM25 검색을 결합한 추론 파이프라인이다.
 ```text
 입력 로드 → 배포 법령 색인 생성 → 공고별 법령 검색
 → 항목 목록·메타·문서·검색 법령으로 프롬프트 구성
@@ -146,9 +145,9 @@ Score = (F1_1 + ... + F1_24) / 24
 - [공식 평가 기준·서버 환경·제출 안내](https://dacon.io/competitions/official/236754/overview/evaluation)
 - [공식 규칙](https://dacon.io/competitions/official/236754/overview/rules)
 - [공식 RAG 코드 공유 예제](https://dacon.io/competitions/official/236754/codeshare/14155)
-- [배포 데이터 README](open/README.md)
-- [항목표](open/data/항목표.json)
-- [현재 추론 코드](open/baseline/script.py)
+- [배포 데이터 README](DACON_README.md)
+- [항목표](data/항목표.json)
+- [현재 추론 코드](baseline/script.py)
 - [기존 RAG 구현·검증 기록](RAG_NOTES.md)
 
 이 문서는 대회 맥락과 현재 상태를 공유하기 위한 참고 자료다. 숨겨진 정답이나 미확인 성능 분석 결과를 포함하지 않는다.
