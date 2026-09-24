@@ -1,8 +1,0 @@
-{
-  "zip_bytes": 22848,
-  "sha256": "c76a8d73899af58460f2580e41378de3acfac3ed94315885c9d019d060f87edb",
-  "members": [
-    "script.py",
-    "requirements.txt"
-  ]
-}
