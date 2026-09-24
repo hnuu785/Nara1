@@ -32,7 +32,18 @@ import unicodedata
 from collections import Counter
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
-DATA_DIR = os.environ.get("PPS_DATA_DIR", "./data")
+def _resolve_default_dir(env_var: str, default_name: str) -> str:
+    val = os.environ.get(env_var)
+    if val:
+        return val
+    if os.path.exists(default_name):
+        return default_name
+    parent_rel = os.path.join("..", default_name)
+    if os.path.exists(parent_rel):
+        return parent_rel
+    return f"./{default_name}"
+
+DATA_DIR = _resolve_default_dir("PPS_DATA_DIR", "data")
 OUTPUT_DIR = os.environ.get("PPS_OUTPUT_DIR", "./output")
 MODEL_DIR = os.environ.get("PPS_MODEL_DIR", "/opt/models/gemma-4-26B-A4B-it")
 

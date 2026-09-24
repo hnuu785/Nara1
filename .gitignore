@@ -12,3 +12,7 @@ __pycache__/
 *$py.class
 *.so
 .pytest_cache/
+
+# Submission archives
+submit*.zip
+output/
