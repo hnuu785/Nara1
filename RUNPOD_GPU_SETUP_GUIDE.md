@@ -65,7 +65,7 @@ RunPod 터미널에서 실행:
 ```bash
 vllm serve /workspace/models/gemma-4-26B-A4B-it \
   --port 8000 \
-  --max-model-len 16384 \
+  --max-model-len 32768 \
   --quantization int8_per_channel_weight_only \
   --gpu-memory-utilization 0.92
 ```
@@ -73,8 +73,8 @@ vllm serve /workspace/models/gemma-4-26B-A4B-it \
 | 인자 | 설정값 | 필수 이유 |
 |---|---|---|
 | `--quantization` | `int8_per_channel_weight_only` | 51.6GB 원본 모델을 48GB VRAM에 로드하기 위한 필수 8비트 양자화. 대회 채점 서버 공식 규격과 100% 일치. |
-| `--max-model-len` | `16384` | Gemma 4의 기본 컨텍스트(256K)로 인한 과도한 KV 캐시 예약 및 OOM 크래시 방지. (대회 상한인 32768까지 확장 가능) |
-| `--gpu-memory-utilization` | `0.92` | 전체 VRAM 중 92%(약 40.84 GiB)를 할당하고 8%는 CUDA 런타임 버퍼로 보존하여 불시 OOM 방지. |
+| `--max-model-len` | `32768` | 대회 규정상 공식 최대 컨텍스트 상한인 **32,768 토큰**을 풀로 활용하여 긴 첨부문서 스팬을 누락 없이 수용. |
+| `--gpu-memory-utilization` | `0.92` | 전체 VRAM 중 92%(약 44.16 GiB)를 할당하고 8%는 CUDA 런타임 버퍼로 보존하여 불시 OOM 방지. |
 | `--port` | `8000` | vLLM 공식 기본 포트. 22(SSH), 8888(Jupyter)과의 포트 충돌 방지. |
 
 ---
@@ -139,7 +139,7 @@ v17    | 0    | 1    | 0    | 0.0000
    ```bash
    vllm serve /workspace/models/gemma-4-26B-A4B-it \
      --port 8000 \
-     --max-model-len 16384 \
+     --max-model-len 32768 \
      --quantization int8_per_channel_weight_only \
      --gpu-memory-utilization 0.92
    ```
