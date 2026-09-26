@@ -305,37 +305,49 @@ def _article_text(source: str, number: str, max_chars: int = 2600) -> str:
 
 
 def load_law_notes(tbl: Dict[str, Dict[str, Any]], data_dir: str) -> Dict[str, str]:
-    """대회 항목표·법령패키지의 고정 스냅샷만 사용해 법령별 프롬프트를 만든다."""
+    """평가 서버가 제공하는 법령패키지의 고정 스냅샷으로 법령별 프롬프트를 만든다."""
     law_dir = os.path.join(data_dir, "법령패키지", "법령")
+    if not os.path.isdir(law_dir):
+        raise FileNotFoundError(f"대회 제공 법령패키지 디렉토리를 찾을 수 없습니다: {law_dir}")
+
     files = {}
-    if os.path.isdir(law_dir):
-        for name in os.listdir(law_dir):
-            if name.endswith(".txt"):
-                files[unicodedata.normalize("NFC", name[:-4])] = os.path.join(law_dir, name)
+    for name in os.listdir(law_dir):
+        if name.endswith(".txt"):
+            files[unicodedata.normalize("NFC", name[:-4])] = os.path.join(law_dir, name)
+
     needed = {stem for specs in LAW_ARTICLES.values() for stem, _ in specs}
-    sources = {stem: io.open(files[stem], encoding="utf-8").read() for stem in needed if stem in files}
-    bundled_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "law_articles.json")
-    bundled = {}
-    if os.path.isfile(bundled_path):
-        with io.open(bundled_path, encoding="utf-8") as f:
-            bundled = json.load(f)
+    missing_files = sorted(needed - files.keys())
+    if missing_files:
+        raise FileNotFoundError(
+            "대회 제공 법령패키지에서 필요한 파일을 찾지 못했습니다: "
+            + ", ".join(missing_files)
+        )
+
+    sources = {stem: io.open(files[stem], encoding="utf-8").read() for stem in needed}
     notes = {}
     for law in ("지방계약법", "국가계약법"):
         lines = ["[대회 제공 항목표의 적용 조문]",
                  "아래 조문은 판정 기준이다. 출력 근거문구에는 반드시 공고 문서의 원문만 사용한다."]
         lines.extend(f"- {v}: {tbl[v][law]}" for v in ITEMS)
         notes[law] = "\n".join(lines) + "\n\n"
+
+    missing_articles = []
     for group, specs in LAW_ARTICLES.items():
         parts = []
         for stem, number in specs:
-            excerpt = (_article_text(sources[stem], number) if stem in sources else
-                       bundled.get(f"{stem}|{number}", ""))
+            excerpt = _article_text(sources[stem], number)
             if excerpt:
                 parts.append(f"[{stem} 제{number if '조' in number else number + '조'}]\n{excerpt}")
+            else:
+                missing_articles.append(f"{stem} 제{number if '조' in number else number + '조'}")
         notes[group] = (notes.get(group, "") +
                         ("[대회 제공 법령 원문 발췌]\n" + "\n\n".join(parts) + "\n\n" if parts else ""))
-    if not sources and not bundled:
-        log("[주의] 법령패키지 원문을 찾지 못해 항목표의 조문 매핑만 사용합니다.")
+
+    if missing_articles:
+        raise ValueError(
+            "대회 제공 법령패키지에서 필요한 조문을 찾지 못했습니다: "
+            + ", ".join(missing_articles)
+        )
     return notes
 
 
@@ -362,9 +374,20 @@ SYSTEM_HEAD = """당신은 공공 입찰공고의 법령 위반 여부를 점검
 8. SW 참여제한은 일반 중소기업 제한과 구별한다. 공고와 제공 제안요청서에
    소프트웨어 진흥법 제48조에 따른 참여제한/적용 안내가 있는지 확인한다.
 9. v24는 메타와 문서의 동일한 의미를 가진 필드를 비교한다. null과 N을 구분하며
-   익명화된 지역 토큰에서 실제 지명을 추측하지 않는다.
+    익명화된 지역 토큰에서 실제 지명을 추측하지 않는다.
 10. [발췌 문서]와 [미제공 문서] 표시는 입력의 한계다. 보이지 않은 부분에
     어떤 조건이 반드시 없다고 단정하지 말고 제공된 자료로 판단한다.
+11. v3은 참가자격에서 요구하는 최소 실적액을 사업예산과 비교한다. 실적 금액이
+    사업예산보다 작으면 v3 위반이 아니다. 단순한 실적 제출·평가·가점은 제한이 아니다.
+12. v13은 지정표의 품목과 실제 구매 대상이 일치할 때만 판단한다. 경쟁제품을
+    소기업·소상공인만으로 제한하면 위반 후보이며, 직접생산 요건만으로는 규모 제한이 아니다.
+13. v17은 추정가격 1억원 미만에서 참가자격이 중기업까지 허용되는지 본다.
+    소기업·소상공인만 허용하면 v17 위반이 아니다. 법령 이름에 '중소기업기본법'이
+    나온다는 이유만으로 중소기업까지 허용했다고 판단하지 않는다.
+14. v19는 물품공급 확약서를 입찰 단계에서 보유·제출하도록 요구했는지 본다.
+    계약 시나 납품 전에 제출하는 조건은 v19 위반이 아니다.
+15. v21은 국가계약의 최소 지분율 10%, 지방계약의 5%를 기준으로 비교한다.
+    그 기준 이상을 요구하거나 최소 지분율 문구가 없으면 v21 위반이 아니다.
 
 판정할 24개 항목"""
 
@@ -571,7 +594,8 @@ def catalog_name_candidates(rec: Dict[str, Any], catalog: Dict[str, Dict[str, st
     입찰자격에 적힌 증명서 품명은 구매 대상과 다를 수 있으므로, 공고 첫머리와
     과업·제안 문서의 실제 업무 설명만 검색한다. 반환값은 확정 분류가 아닌 후보이다.
     """
-    notice = "\n".join(d["text"][:1800] for d in rec["docs"] if d["type"] == "공고문")
+    notices = "\n".join(d["text"] for d in rec["docs"] if d["type"] == "공고문")
+    notice = notices[:1800]
     task = "\n".join(d["text"] for d in rec["docs"] if d["type"] in ("과업지시서", "제안요청서", "규격서"))
     target = notice + "\n" + task
     compact = CATALOG_NAME_SPACE.sub("", target)
@@ -585,9 +609,12 @@ def catalog_name_candidates(rec: Dict[str, Any], catalog: Dict[str, Dict[str, st
     # 행사 대행 용역은 공고에서 지정표의 정식 명칭보다 과업 표현으로 나타나는 경우가 많다.
     # '행사'가 부수 업무에만 나오는 물품 입찰을 막기 위해 용역 + 실제 과업 표현을 함께 확인한다.
     business = str(rec.get("meta", {}).get("업무구분") or "")
-    title = " ".join(d["text"][:250] for d in rec["docs"])
-    event_target = re.search(r"공연|버스커|축제|전시회|성과공유회|행사", title)
-    event_work = re.search(r"행사\s*기획|행사\s*대행|행사\s*운영|공연.{0,25}운영\s*대행|거리\s*공연.{0,25}운영", task)
+    event_target = re.search(r"공연|버스커|축제|전시회|성과공유회|행사", notices)
+    # Some notices include a precise event-agency title but no separate task attachment.
+    event_work = re.search(
+        r"행사\s*기획|행사\s*대행|행사\s*운영|공연.{0,25}운영\s*대행|거리\s*공연.{0,25}운영",
+        task or notices,
+    )
     if "용역" in business and event_target and event_work and "8014199001" in catalog:
         found.setdefault("8014199001", f"과업 표현 '{event_work.group(0)[:45]}'")
     return sorted(found.items(), key=lambda item: (0 if item[1].startswith("세부품명") else 1, item[0]))[:6]
@@ -689,18 +716,101 @@ def notice_amount_note(rec: Dict[str, Any]) -> str:
 
 NO_JOINT = re.compile(
     r"(?:공동수급|공동계약|공동도급)(?:(?![.。\n]).){0,45}"
-    r"(?:불허|허용하지\s*않|불가|금지)"
+    r"(?:불허|허용하지\s*않|불가|금지)|"
+    r"공동제안이\s*아닌\s*단독|단독으로\s*신청한\s*사업자"
+)
+
+MONEY_IN_TEXT = re.compile(
+    r"(?<!\d)(\d[\d,]*(?:\.\d+)?)\s*"
+    r"(억원|억\s*원|억|천만원|천만\s*원|천만|백만원|백만\s*원|백만|만원|만\s*원|만|천원|원)"
 )
 
 
+def money_values(text: str) -> List[int]:
+    """본문의 숫자 금액을 원 단위로 바꾼다."""
+    factors = {
+        "억원": 100_000_000, "억 원": 100_000_000, "억": 100_000_000,
+        "천만원": 10_000_000, "천만 원": 10_000_000, "천만": 10_000_000,
+        "백만원": 1_000_000, "백만 원": 1_000_000, "백만": 1_000_000,
+        "만원": 10_000, "만 원": 10_000, "만": 10_000,
+        "천원": 1_000, "원": 1,
+    }
+    tokens = []
+    for match in MONEY_IN_TEXT.finditer(text or ""):
+        number, unit = match.groups()
+        key = re.sub(r"\s+", "", unit)
+        tokens.append((match.start(), match.end(), round(float(number.replace(",", "")) * factors[key]), factors[key]))
+
+    # Korean amounts often split a single value into descending units, e.g. "1억 5천만원".
+    values: List[int] = []
+    index = 0
+    while index < len(tokens):
+        _, end, amount, factor = tokens[index]
+        index += 1
+        while index < len(tokens):
+            start, next_end, next_amount, next_factor = tokens[index]
+            gap = (text or "")[end:start]
+            if gap.strip() or next_factor >= factor:
+                break
+            amount += next_amount
+            factor = next_factor
+            end = next_end
+            index += 1
+        values.append(amount)
+    return values
+
+
+def minimum_share_clauses(text: str) -> List[Tuple[float, str]]:
+    """최소 지분율을 직접 정한 원문 구절과 퍼센트를 찾는다."""
+    results: List[Tuple[float, str]] = []
+    for line in (text or "").splitlines():
+        normalized = re.sub(r"\s+", " ", line).strip()
+        for match in re.finditer(
+            r"(?:최소.{0,30}(?:지분율|지분|참여비율)|"
+            r"(?:지분율|지분|참여비율).{0,20}최소)", normalized
+        ):
+            fragment = normalized[max(0, match.start() - 12):match.end() + 100]
+            for pct in re.finditer(r"(\d+(?:\.\d+)?)\s*%", fragment):
+                results.append((float(pct.group(1)), normalized[:1000]))
+                break
+    return results
+
+
+def v17_allows_medium(evidence: str) -> bool:
+    """True only for explicit medium/SME membership language, not statute titles."""
+    return bool(re.search(
+        r"중기업(?:자)?|중[·ㆍ･-]\s*소기업|"
+        r"중소기업(?:자(?!간)|\s*(?:또는|및|으로서|만|확인서))",
+        evidence or "",
+    ))
+
+
+def after_bid_supply_requirement(evidence: str) -> bool:
+    """A later contract/delivery-stage letter is not a pre-bid submission condition."""
+    if not evidence:
+        return False
+    pre_bid = re.search(
+        r"입찰\s*(?:참가|서|마감|제출)|전자입찰서\s*제출|입찰전|입찰\s*전|"
+        r"낙찰통보\s*이전|낙찰\s*전|입찰마감일\s*전",
+        evidence,
+    )
+    later = re.search(
+        r"계약\s*시|계약체결\s*(?:시|후|이후)|낙찰\s*후|계약상대자\s*결정\s*후|"
+        r"물품\s*납품\s*전|납품\s*전|제품\s*납품\s*전",
+        evidence,
+    )
+    return bool(later and not pre_bid)
+
+
 def apply_guards(judgment: Dict[str, Dict[str, Any]], rec: Dict[str, Any],
-                 competition_codes: set[str]) -> Dict[str, Dict[str, Any]]:
+                 competition_catalog: Dict[str, Dict[str, str]]) -> Dict[str, Dict[str, Any]]:
     """적용 조건이 명백히 성립하지 않는 예측만 0으로 교정한다."""
     out = {v: dict(cell) for v, cell in judgment.items()}
     meta = rec.get("meta", {})
     price = meta.get("입찰추정가격")
     law = str(meta.get("적용계약법") or "")
     business = str(meta.get("업무구분") or "")
+    full = full_text(rec)
     if (isinstance(price, (int, float)) and price >= NATIONAL_NOTICE_AMOUNT
             and ("물품" in business or "용역" in business)):
         # 운영진 보완 공지: v2의 고시금액은 지방 지역제한액이 아닌 2억 3천만원.
@@ -725,15 +835,67 @@ def apply_guards(judgment: Dict[str, Dict[str, Any]], rec: Dict[str, Any],
     if isinstance(price, (int, float)) and price >= 100_000_000:
         out["v17"]["위반여부"] = 0  # v17은 1억원 미만에만 적용
 
-    codes = set(TEN_DIGITS.findall(str(meta.get("세부품명번호목록") or "")))
-    doc_codes = set(TEN_DIGITS.findall("\n".join(d["text"] for d in rec["docs"])))
-    if (competition_codes and codes and not codes.intersection(competition_codes)
-            and not doc_codes.intersection(competition_codes)):
-        out["v13"]["위반여부"] = 0  # 명시된 품목이 모두 비경쟁제품
+    # v3 compares the required experience threshold against the allocated project budget.
+    budget = meta.get("배정예산금액")
+    v3_evidence = str(out["v3"].get("근거문구") or "")
+    if (out["v3"]["위반여부"] == 1 and isinstance(budget, (int, float))
+            and v3_evidence and v3_evidence in full):
+        amounts = money_values(v3_evidence)
+        if amounts and max(amounts) < budget:
+            out["v3"]["위반여부"] = 0
 
-    notice = "\n".join(d["text"] for d in rec["docs"] if d["type"] == "공고문")
-    if not meta.get("공동도급구성방식") and NO_JOINT.search(notice):
-        out["v21"]["위반여부"] = 0  # 공동수급 불허 시 구성원 지분율 미적용
+    # v17 is violated by an explicit SME/mid-business scope, not a small-only scope.
+    v17_evidence = str(out["v17"].get("근거문구") or "")
+    if (out["v17"]["위반여부"] == 1 and isinstance(price, (int, float))
+            and price < 100_000_000 and v17_evidence and v17_evidence in full
+            and not v17_allows_medium(v17_evidence)):
+        out["v17"]["위반여부"] = 0
+
+    # A designated item (or an explicit catalogue-name candidate) is required for v13.
+    competition_codes = set(competition_catalog)
+    codes = set(TEN_DIGITS.findall(str(meta.get("세부품명번호목록") or "")))
+    doc_codes = set(TEN_DIGITS.findall(full))
+    matched_codes = (codes | doc_codes) & competition_codes
+    candidate_codes = {code for code, _ in catalog_name_candidates(rec, competition_catalog)} \
+        if competition_catalog and not matched_codes else set()
+    applicable_codes = set(matched_codes)
+    for code in list(applicable_codes | candidate_codes):
+        row = competition_catalog.get(code, {})
+        limit = PRICE_LIMIT.search(str(row.get("특이사항") or ""))
+        if limit and isinstance(price, (int, float)) and price >= float(limit.group(1)) * 100_000_000:
+            applicable_codes.discard(code)
+            candidate_codes.discard(code)
+    if out["v13"]["위반여부"] == 1 and competition_catalog and not (applicable_codes | candidate_codes):
+        out["v13"]["위반여부"] = 0
+
+    v19_evidence = str(out["v19"].get("근거문구") or "")
+    if (out["v19"]["위반여부"] == 1 and v19_evidence and v19_evidence in full
+            and after_bid_supply_requirement(v19_evidence)):
+        out["v19"]["위반여부"] = 0
+
+    # v21 is a percentage comparison. The legal minimum differs by contract law.
+    notice = full
+    if NO_JOINT.search(notice):
+        out["v21"]["위반여부"] = 0
+    elif "국가" in law or "지방" in law:
+        share_clauses = minimum_share_clauses(notice)
+        if "분담이행" in str(meta.get("공동도급구성방식") or "") \
+                and "공동이행" not in str(meta.get("공동도급구성방식") or ""):
+            out["v21"]["위반여부"] = 0
+        elif share_clauses:
+            threshold = 10.0 if "국가" in law else 5.0
+            below = [(pct, clause) for pct, clause in share_clauses if pct < threshold]
+            if below:
+                out["v21"]["위반여부"] = 1
+                share_evidence = str(out["v21"].get("근거문구") or "")
+                if not share_evidence or share_evidence not in full:
+                    out["v21"]["근거문구"] = below[0][1]
+            else:
+                out["v21"]["위반여부"] = 0
+        elif out["v21"]["위반여부"] == 1:
+            share_evidence = str(out["v21"].get("근거문구") or "")
+            if share_evidence and share_evidence in full and not re.search(r"\d+(?:\.\d+)?\s*%", share_evidence):
+                out["v21"]["위반여부"] = 0
     return out
 
 
@@ -817,7 +979,6 @@ def run(input_path: str, out_path: str, runner_cls, limit: Optional[int], chunk:
     tbl, schema = item_table(data_dir), decode_schema(data_dir)
     law_notes = load_law_notes(tbl, data_dir)
     competition_catalog = load_competition_catalog(data_dir)
-    competition_codes = set(competition_catalog)
     for rec in recs:
         rec["_competition_note"] = competition_note(rec, competition_catalog)
         rec["_amount_note"] = notice_amount_note(rec)
@@ -857,7 +1018,7 @@ def run(input_path: str, out_path: str, runner_cls, limit: Optional[int], chunk:
             invalid += int(len(missing) == 24)
             filled += len(missing)
             before = sum(1 for v in ITEMS if parsed[v]["근거문구"] and parsed[v]["위반여부"] == 1 and v not in ABSENCE)
-            guarded = apply_guards(parsed, rec, competition_codes)
+            guarded = apply_guards(parsed, rec, competition_catalog)
             guard_changes.update(v for v in ITEMS
                                  if guarded[v]["위반여부"] != parsed[v]["위반여부"])
             final = postprocess(guarded, rec)
