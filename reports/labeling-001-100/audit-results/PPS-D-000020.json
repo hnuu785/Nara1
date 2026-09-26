@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000020",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0d793bc964a3c590016ab6282ad7d087d1b1b32efb52427220",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 6111,
+    "input_tokens_details": {
+      "cache_write_tokens": 6108,
+      "cached_tokens": 0
+    },
+    "output_tokens": 664,
+    "output_tokens_details": {
+      "reasoning_tokens": 516
+    },
+    "total_tokens": 6775
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "견적서(입찰) 방법\n\n● 전자입찰 제한경쟁(단가계약, 부가가치세 포함)",
+      "reason": "메타의 계약방법은 '수의계약'이나, 본문의 '견적서(입찰) 방법'에는 '제한경쟁'으로 명시되어 계약방식 표기가 충돌한다. 공고 제목 등에 소액수의로 기재된 것과 별개로 해당 항목의 상이한 표기가 확인된다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

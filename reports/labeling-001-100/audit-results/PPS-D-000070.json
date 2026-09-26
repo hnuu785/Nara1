@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000070",
+  "items": [
+    "v7"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_08e740d4235f8015016ab62acfdae487d1ad879c5977ce551a",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 19584,
+    "input_tokens_details": {
+      "cache_write_tokens": 19581,
+      "cached_tokens": 0
+    },
+    "output_tokens": 840,
+    "output_tokens_details": {
+      "reasoning_tokens": 653
+    },
+    "total_tokens": 20424
+  },
+  "labels": {
+    "v7": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 22,712,400원의 지방계약 소액수의 용역으로, 실제 참가자격을 경상남도 내 3개 기초지역으로 제한한다. 이는 인접 시·도 확대와는 구별된다. 소액수의의 지역제한·확대에 적용할 수의계약 운영요령 발췌가 제공되지 않았고, 익명화된 지역 간 인접관계도 확인되지 않아 위반 여부를 확정할 수 없다.",
+      "law_basis": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행규칙 제25조제3항"
+    }
+  },
+  "qa_issues": []
+}

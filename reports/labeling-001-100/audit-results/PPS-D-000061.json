@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000061",
+  "items": [
+    "v9"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0c63b27330c1c4a1016ab62a77d80087d1abf078e51cc0a886",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 6319,
+    "input_tokens_details": {
+      "cache_write_tokens": 6316,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1022,
+    "output_tokens_details": {
+      "reasoning_tokens": 820
+    },
+    "total_tokens": 7341
+  },
+  "labels": {
+    "v9": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "과업지시서의 '하이플러스지 90g/㎡'가 특정 상표·모델인지 일반적인 지질 명칭인지 제공 자료만으로 확정할 수 없다. 'Quark 파일'은 발주처가 제공하는 원고 형식으로, 특정 제품의 구매·사용 의무를 명시한 것은 아니다. 지방계약 적용 건이나 해당 지방계약 집행기준의 세부 발췌도 없어 위반 여부를 확정하기 어렵다.",
+      "law_basis": "(행안부예규) 지방자치단체 입찰 및 계약 집행기준 제1장 7(항목표에만 제시, 발췌 미제공)"
+    }
+  },
+  "qa_issues": []
+}

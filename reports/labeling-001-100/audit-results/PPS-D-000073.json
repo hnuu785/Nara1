@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000073",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_00b4aa03b7db87a3016ab62ad5f3b887d1ae66518159a469ab",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 12047,
+    "input_tokens_details": {
+      "cache_write_tokens": 12044,
+      "cached_tokens": 0
+    },
+    "output_tokens": 484,
+    "output_tokens_details": {
+      "reasoning_tokens": 247
+    },
+    "total_tokens": 12531
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "나. 여객자동차 운수사업법 제4조 및 동법시행령 제3조에 의한 [여객자동차운송사업(구역여객자동차운송사업-전세버스) 나라장터(G2B) 업종코드 5805] 등록자로서, 입찰 공고 전일기준 본사 또는 영업소가 서울특별시 또는 경기도에 소재한 업체여야 합니다.",
+      "reason": "메타는 업종제한여부가 'N'이나, 공고문은 입찰 참가자격으로 전세버스 운송사업(업종코드 5805) 등록을 명시적으로 요구한다. 이는 평가자료나 첨부 양식이 아닌 필수 참가조건이므로 업종제한 여부가 서로 충돌한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000021",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_07dd168d4ebc7054016ab6283b7e4087d1b76d9afe03943a9f",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 24852,
+    "input_tokens_details": {
+      "cache_write_tokens": 24849,
+      "cached_tokens": 0
+    },
+    "output_tokens": 839,
+    "output_tokens_details": {
+      "reasoning_tokens": 663
+    },
+    "total_tokens": 25691
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "가. 다음 각 호의 자격을 모두 갖춘 자만 입찰서를 제출할 수 있습니다.\n\n① 늘봄학교 또는 교육 관련 사업자등록을 한 자",
+      "reason": "메타는 업종제한여부가 'N'이지만, 공고문은 늘봄학교 또는 교육 관련 사업자등록을 필수 입찰참가자격으로 정하여 사업 분야를 제한한다. 이는 평가자료나 첨부 양식이 아닌 참가자격 조건이므로 업종제한 여부가 상충한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

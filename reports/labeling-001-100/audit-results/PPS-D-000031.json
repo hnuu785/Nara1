@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000031",
+  "items": [
+    "v5",
+    "v7"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_02f0e6e9e4dc0027016ab6286f642087d1af4d184451b2f382",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 19696,
+    "input_tokens_details": {
+      "cache_write_tokens": 19693,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1666,
+    "output_tokens_details": {
+      "reasoning_tokens": 1345
+    },
+    "total_tokens": 21362
+  },
+  "labels": {
+    "v5": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "지방계약법 적용 일반용역이며, 비교 대상은 부가세 제외 추정가격 212,727,273원이다. 이는 5억원보다 낮지만, 해당 교육지원청의 법 제5조제1항 적용 여부와 그에 따른 행정안전부 고시금액이 제공되지 않아 지역제한 한도 이상인지 확정할 수 없다. 국가계약 고시금액으로 대신 판단할 수는 없다.",
+      "law_basis": "지방계약법 시행규칙 제24조제2호나목"
+    },
+    "v7": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "서울 소재 현장의 입찰참가자격을 서울·경기·인천 본점 소재 업체로 확대하였다. 소액수의가 아닌 제한경쟁이므로 제25조제3항의 예외 충족 여부를 확인해야 한다. 그러나 해당 지역의 유자격자 10인 미만 여부나 인접 시·도 납품지 등 예외에 관한 사실이 제공되지 않아, 확대 사실만으로 위반을 확정할 수 없다.",
+      "law_basis": "지방계약법 시행규칙 제25조제3항"
+    }
+  },
+  "qa_issues": []
+}

@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000045",
+  "items": [
+    "v16"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0d751247fd770011016ab629310ba887d187fde63cf25a4d72",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 13700,
+    "input_tokens_details": {
+      "cache_write_tokens": 13697,
+      "cached_tokens": 0
+    },
+    "output_tokens": 601,
+    "output_tokens_details": {
+      "reasoning_tokens": 386
+    },
+    "total_tokens": 14301
+  },
+  "labels": {
+    "v16": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "",
+      "reason": "용역의 추정가격은 158,909,091원으로 1억원 이상 고시금액 2억3천만원 미만이므로 중소기업자 간 제한경쟁 대상이다. 참가자격에 경상북도 소재, 폐기물 수집·운반업 허가 및 탱크로리 보유만 요구하고 중소기업자 제한은 두지 않았으며, 우선조달 예외 사유도 명시하지 않았다.",
+      "law_basis": "중소기업제품 구매촉진 및 판로지원에 관한 법률 시행령 제2조의2제1항제2호·제2조의3; 국가계약법 등의 재정경제부장관이 정하는 고시금액 제1호 가목"
+    }
+  },
+  "qa_issues": []
+}

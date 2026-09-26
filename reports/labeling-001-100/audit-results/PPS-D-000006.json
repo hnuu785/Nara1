@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000006",
+  "items": [
+    "v9",
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0ab4a475356a2e56016ab62799be2887d1828f29367ef61c40",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 6378,
+    "input_tokens_details": {
+      "cache_write_tokens": 6375,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1116,
+    "output_tokens_details": {
+      "reasoning_tokens": 856
+    },
+    "total_tokens": 7494
+  },
+  "labels": {
+    "v9": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "제공된 공고에는 특정 상표·모델을 지정하는 납품 조건이 없다. 서적 분류번호와 DLS 비용 언급은 특정 모델 지정에 해당하지 않는다.",
+      "law_basis": "항목표상 지방자치단체 입찰 및 계약 집행기준 제1장 7"
+    },
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "마. 개찰일시 및 장소: 2025. 1. 13.(화) 11:00, [수요기관(중학교)] 입찰집행관 PC",
+      "reason": "메타의 개찰예정일자는 2026년 1월 13일이나 공고문의 개찰일시는 2025년 1월 13일로, 동일한 개찰 일정의 연도가 명시적으로 충돌한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

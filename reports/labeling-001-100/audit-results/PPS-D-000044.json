@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000044",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0cccebac19b655a4016ab629281c4087d1bfb00f81a3e0264d",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 28550,
+    "input_tokens_details": {
+      "cache_write_tokens": 28547,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1866,
+    "output_tokens_details": {
+      "reasoning_tokens": 1702
+    },
+    "total_tokens": 30416
+  },
+  "labels": {
+    "v24": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "총예산 325,102,000원, 서울특별시 지역제한, 규격·가격동시입찰의 상세 절차 및 개찰일은 메타와 일치한다. 다만 참가자격의 ‘방과후 또는 교육 관련 사업자등록’ 요건이 메타의 ‘업종제한여부 N’과 동일한 제한 범주인지 제공 자료만으로 확정하기 어렵다. 본문의 공고기간 시작일도 시스템 게시일과 동일한 역할이라고 단정할 수 없어 명백한 입력값 상이로 판정하지 않는다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

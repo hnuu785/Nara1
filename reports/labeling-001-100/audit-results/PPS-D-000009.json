@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000009",
+  "items": [
+    "v7"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_01d5a4ab914a11d1016ab627b6bb6487d183ca16fb5011c569",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 19815,
+    "input_tokens_details": {
+      "cache_write_tokens": 19812,
+      "cached_tokens": 0
+    },
+    "output_tokens": 990,
+    "output_tokens_details": {
+      "reasoning_tokens": 790
+    },
+    "total_tokens": 20805
+  },
+  "labels": {
+    "v7": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "지방계약법 적용 일반용역 제한경쟁이며 추정가격은 154,110,545원이다. 참가자격을 울산 외 부산·경남·경북까지 확대했으나, 시행규칙 제25조제3항은 해당 지역의 적격업체가 10인 미만인 경우 등에 인접 시·도 확대를 허용한다. 제공 자료로는 이러한 예외의 충족 여부를 확인할 수 없어 위반을 확정할 수 없다. 또한 지방계약에 적용할 고시금액이 제공되지 않아 국가계약 고시금액 2억 3천만 원을 대신 적용할 수 없다.",
+      "law_basis": "지방계약법 시행규칙 제24조제2호나목·제25조제3항"
+    }
+  },
+  "qa_issues": []
+}

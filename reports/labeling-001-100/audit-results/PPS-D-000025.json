@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000025",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0884ecad764b34a1016ab62855370087d197a1ab1786244abf",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 7586,
+    "input_tokens_details": {
+      "cache_write_tokens": 7583,
+      "cached_tokens": 0
+    },
+    "output_tokens": 239,
+    "output_tokens_details": {
+      "reasoning_tokens": 139
+    },
+    "total_tokens": 7825
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "라. 일반경쟁이 적용되는 계약입니다.",
+      "reason": "메타의 계약방법은 '제한경쟁'이나, 공고문 '2. 입찰 및 계약방식'에서는 '일반경쟁'을 명시하여 동일한 계약방법 값이 충돌한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

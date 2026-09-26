@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000091",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0a14d93099b0a931016ab62b16b2f887d183bd06f385b50307",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 7833,
+    "input_tokens_details": {
+      "cache_write_tokens": 7830,
+      "cached_tokens": 0
+    },
+    "output_tokens": 346,
+    "output_tokens_details": {
+      "reasoning_tokens": 110
+    },
+    "total_tokens": 8179
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "2) 「건설폐기물의 재활용촉진에 관한 법률」 제21조에 따른 폐기물수집·운반업(건설폐기물, 업종코드 6728)과 폐기물중간처리업(건설폐기물, 업종코드 1253)을 모두 등록한 자이어야 합니다.",
+      "reason": "메타는 업종제한여부가 'N'이나, 공고문은 견적제출 자격으로 폐기물수집·운반업과 폐기물중간처리업 등록을 요구한다. 장비기준 충족 시 수집·운반업 등록을 면제하는 예외에도 중간처리업 등록은 필요하므로, 업종제한 여부가 명시적으로 충돌한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

@@ -2,6 +2,7 @@ train_unlabeled.jsonl.gz
 .DS_Store
 .venv/
 venv/
+.env
 
 # Regenerated submission packages (versions are kept in Git)
 .artifacts/

@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000063",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0e3917d5039580e6016ab62a7ee7a087d1a562c59db1c8822c",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 23277,
+    "input_tokens_details": {
+      "cache_write_tokens": 23274,
+      "cached_tokens": 0
+    },
+    "output_tokens": 533,
+    "output_tokens_details": {
+      "reasoning_tokens": 379
+    },
+    "total_tokens": 23810
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "다. 지역제한(제한지역: 서울특별시) 입찰입니다.(추정가격 5억원 이하인 경우)",
+      "reason": "메타는 지역제한여부가 'N'이나 본문은 서울특별시 지역제한 입찰로 명시한다. 추정가격 498,308,000원은 본문상 적용 조건인 5억원 이하이며, 입찰참가자격에서도 본점·사업장 소재지를 서울특별시로 제한하므로 명백한 불일치다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

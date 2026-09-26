@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000098",
+  "items": [
+    "v3",
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_04c8a5ef39267f8f016ab62b3ef8b887d189e1b4abbcd43a62",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 19718,
+    "input_tokens_details": {
+      "cache_write_tokens": 19715,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1387,
+    "output_tokens_details": {
+      "reasoning_tokens": 1034
+    },
+    "total_tokens": 21105
+  },
+  "labels": {
+    "v3": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "최근 2년 이내 실적 5건은 참가자격 조건이지만, 사업예산 대비 실적금액 하한을 정한 것은 아니다. 평가표와 실적서에도 예산 1배 이상의 실적금액 요건은 없다. 또한 추정가격 127,272,727원은 고시금액 2억 3천만원 미만으로, 배포된 용역 실적 1배 상한 규정의 적용대상이 아니다.",
+      "law_basis": "국가계약법 시행규칙 제25조제2항제1호, 고시금액 제1호가목"
+    },
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "학술·연구용역(업종코드: 1169) 또는 기타자유업종(업종코드 : 9999), 으로 입찰 참가자격\n을 등록한 업체",
+      "reason": "메타의 면허업종제한목록은 1169와 9999를 '과'로 연결하여 두 업종을 모두 요구하지만, 공고문은 '또는'으로 연결하여 어느 한 업종 등록을 허용한다. 동일한 업종 참가자격의 결합조건이 명시적으로 충돌한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

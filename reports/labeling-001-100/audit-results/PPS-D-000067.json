@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000067",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_08b6f9eef149feba016ab62aa625c087d189c525eaca2fbb5c",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 6926,
+    "input_tokens_details": {
+      "cache_write_tokens": 6923,
+      "cached_tokens": 0
+    },
+    "output_tokens": 542,
+    "output_tokens_details": {
+      "reasoning_tokens": 371
+    },
+    "total_tokens": 7468
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "※ 본 입찰은 전자입찰방식에 의하여 집행하므로 이비즈포유 전자조달시스템 이용자 등록을 한 자만이 입찰에 참여할 수 있음을 알려드리며, 등록 서류는 반드시 제출 마감일 이내에 이비즈포유 전자조달시스템([URL])을 이용하여 제출하여야 합니다.",
+      "reason": "메타의 입찰방법은 '직찰'이나, 공고문은 이비즈포유를 통한 '전자입찰방식'으로 집행한다고 명시하여 입찰방법이 상충한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

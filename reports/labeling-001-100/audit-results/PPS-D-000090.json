@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000090",
+  "items": [
+    "v5",
+    "v16"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0cb6f50ba39ca50e016ab62b06867887d1b8305a934c24b6b8",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 37092,
+    "input_tokens_details": {
+      "cache_write_tokens": 37089,
+      "cached_tokens": 0
+    },
+    "output_tokens": 999,
+    "output_tokens_details": {
+      "reasoning_tokens": 663
+    },
+    "total_tokens": 38091
+  },
+  "labels": {
+    "v5": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "서울특별시 본점 소재지 제한은 확인된다. 그러나 지방계약 일반용역의 지역제한 기준은 법 제5조제1항 적용 여부에 따라 행정안전부 고시금액 또는 5억원이다. 해당 적용 여부와 행정안전부 고시금액이 제공되지 않아 추정가격 313,530,000원에 대한 위반 여부를 확정할 수 없다. 국가계약 고시금액 2억 3천만원을 대신 적용할 수는 없다.",
+      "law_basis": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행규칙 제24조제2호나목"
+    },
+    "v16": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 313,530,000원은 배포 고시의 물품·용역 기준금액 2억 3천만원 이상이다. 따라서 '1억원 이상 고시금액 미만'인 계약에 대한 중소기업자 제한 의무의 적용 대상이 아니다.",
+      "law_basis": "중소기업제품 구매촉진 및 판로지원에 관한 법률 시행령 제2조의2제1항제2호; 국가계약 고시금액 제1호가목"
+    }
+  },
+  "qa_issues": []
+}

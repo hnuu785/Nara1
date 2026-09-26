@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000014",
+  "items": [
+    "v5",
+    "v16"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0b11583733bd6133016ab627e5cde887d1a473fb9ff68c93ad",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 36534,
+    "input_tokens_details": {
+      "cache_write_tokens": 36531,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1288,
+    "output_tokens_details": {
+      "reasoning_tokens": 927
+    },
+    "total_tokens": 37822
+  },
+  "labels": {
+    "v5": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "서울특별시 본점 소재지 제한이 참가자격에 명시되어 있다. 추정가격 492,905,000원은 5억원 미만이나, 일반용역의 지역제한 기준은 지방계약법 제5조제1항 적용 여부에 따라 행정안전부 고시금액 또는 5억원으로 달라진다. 제공 자료만으로는 해당 교육기관의 적용 여부와 행정안전부 고시금액을 확인할 수 없어 확정할 수 없다.",
+      "law_basis": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행규칙 제24조제2호나목"
+    },
+    "v16": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 492,905,000원은 배포 고시의 물품·용역 기준인 230,000,000원을 초과한다. 따라서 이 항목의 적용 구간인 추정가격 1억원 이상 고시금액 미만에 해당하지 않아 중소기업 제한 부재는 비적용이다.",
+      "law_basis": "중소기업제품 구매촉진 및 판로지원에 관한 법률 시행령 제2조의2제1항제2호; 국가를 당사자로 하는 계약에 관한 법률 등의 재정경제부장관이 정하는 고시금액 제1호가목"
+    }
+  },
+  "qa_issues": []
+}

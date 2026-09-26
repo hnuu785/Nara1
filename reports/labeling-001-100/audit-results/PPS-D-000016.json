@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000016",
+  "items": [
+    "v5"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0a106ecebf582b19016ab627ff368c87d18d5dd0fde42dd922",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 36704,
+    "input_tokens_details": {
+      "cache_write_tokens": 36701,
+      "cached_tokens": 0
+    },
+    "output_tokens": 878,
+    "output_tokens_details": {
+      "reasoning_tokens": 699
+    },
+    "total_tokens": 37582
+  },
+  "labels": {
+    "v5": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 260,760,000원의 늘봄학교 운영 용역에 대구광역시 본점 소재지 제한이 있다. 일반용역의 지역제한 기준은 법 제5조제1항 적용 여부에 따라 행정안전부장관 고시금액 또는 5억원인데, 해당 기관의 적용 여부와 행정안전부장관 고시금액이 제공되지 않아 위반 여부를 확정할 수 없다. 국가계약 고시금액 2억3천만원을 대신 적용할 수는 없다.",
+      "law_basis": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행규칙 제24조제2호나목"
+    }
+  },
+  "qa_issues": []
+}

@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000082",
+  "items": [
+    "v5",
+    "v16"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0ae52729cb5351e8016ab62afd657087d1ab478d0e4a58aca3",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 41616,
+    "input_tokens_details": {
+      "cache_write_tokens": 41613,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1306,
+    "output_tokens_details": {
+      "reasoning_tokens": 929
+    },
+    "total_tokens": 42922
+  },
+  "labels": {
+    "v5": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "서울특별시 본점 소재지 제한이 명시되어 있고 추정가격은 446,797,000원이다. 일반용역의 지역제한 기준은 지방계약법 제5조제1항 적용 여부에 따라 행정안전부 고시금액 또는 5억원인데, 해당 학교의 적용 구분과 행정안전부 고시금액이 제공되지 않아 위반 여부를 확정할 수 없다. 국가계약 고시금액 2억3천만원을 대신 적용할 수는 없다.",
+      "law_basis": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행규칙 제24조제2호나목"
+    },
+    "v16": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 446,797,000원(부가가치세 0원)은 배포된 국가 물품·용역 고시금액 2억3천만원 이상이다. 따라서 중소기업자 제한 의무를 검토하는 '1억원 이상·고시금액 미만' 구간에 해당하지 않으므로 이 항목은 비적용이다.",
+      "law_basis": "중소기업제품 구매촉진 및 판로지원에 관한 법률 시행령 제2조의2제1항제2호; 국가를 당사자로 하는 계약에 관한 법률 등의 재정경제부장관이 정하는 고시금액 제1호가목"
+    }
+  },
+  "qa_issues": []
+}

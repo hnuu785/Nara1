@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000005",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_06d571558f146303016ab6278df76487d1839baaecdf29cfe4",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 4667,
+    "input_tokens_details": {
+      "cache_write_tokens": 4664,
+      "cached_tokens": 0
+    },
+    "output_tokens": 693,
+    "output_tokens_details": {
+      "reasoning_tokens": 516
+    },
+    "total_tokens": 5360
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D1",
+      "evidence": "사업자등록증 또는 관련 법령에 따른 허가 인가 면허 등록 신고 등에 관련한 서류에 기재된\n사업장의 소재지를 계속하여 울산광역시에 둔 업체",
+      "reason": "메타는 지역제한여부가 'N'이나, 규격서는 사업장 소재지를 계속 울산광역시에 둔 업체를 요구한다. 공고문 5-나에서 구매규격서의 요구사항 충족을 참가자격으로 정했으므로, 이는 단순한 기관 주소나 첨부 양식이 아닌 참가자격의 지역제한과 메타 간 명시적 충돌이다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}
