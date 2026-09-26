@@ -1,6 +1,6 @@
 # 나라장터 법령 위반사항 모니터링 AI 경진대회 — 에이전트 참고 맥락
 
-마지막 확인: 2026-09-26. 공식 대회 페이지, 운영진 보완 공지, 배포 README, 항목표 및 현재 코드를 확인하여 작성했다.
+마지막 확인: 2026-09-27. 공식 대회 페이지, 운영진 보완 공지, 데이터 명세, 배포 README, 항목표 및 현재 코드를 확인하여 작성했다.
 변경 가능한 규칙·일정·실행환경은 작업 전에 공식 페이지를 다시 확인한다. 실제 법령 판정은 최신 인터넷 법령이 아니라 **대회에서 배포한 법령 스냅샷**을 기준으로 한다.
 
 ## 1. 대회의 목적과 문제 정의
@@ -51,6 +51,8 @@ Score = (F1_1 + ... + F1_24) / 24
 - `dropped_doc_counts`, `input_completeness`: 문서 제외 및 관측 완전성 정보.
 - 기관명·주소 등은 익명화되어 있다. 지역 토큰에는 지역 계층 정보가 포함될 수 있다.
 - `null`과 `"미입력"`은 다르며, 둘 다 자동으로 `"해당 없음"`을 뜻하지 않는다.
+
+첨부 문서가 `dropped_doc_counts`에 기록되어 있으면 길이 예산 초과로 해당 문서가 입력에서 빠진 것이다. 빠진 문서에 판정 근거가 있었는지 알 수 없을 때는 그 내용이 없었다고 단정하지 않는다. 다만 대회 제출 규칙은 판단하기 어려운 항목도 비워 두지 말고 0으로 제출하라고 하므로, 이 경우 제출값은 0으로 두고 검토 메모에는 **판단 불가에 따른 기본값**이라고 적어야 한다. 이 0은 위반이 없음을 확인했다는 뜻이 아니다.
 
 출력은 `output/submission.csv`이며 **49열: `id,v1..v24,e1..e24`**이다. 입력과 동일한 ID 집합 및 행 수를 출력한다.
 
@@ -146,6 +148,8 @@ Score = (F1_1 + ... + F1_24) / 24
 - [공식 대회 개요](https://dacon.io/competitions/official/236754/overview/description)
 - [공식 평가 기준·서버 환경·제출 안내](https://dacon.io/competitions/official/236754/overview/evaluation)
 - [공식 규칙](https://dacon.io/competitions/official/236754/overview/rules)
+- [공식 데이터 명세](https://dacon.io/competitions/official/236754/talkboard/417195)
+- [운영진 v9 판정 답변](https://dacon.io/competitions/official/236754/talkboard/417272)
 - [공식 RAG 코드 공유 예제](https://dacon.io/competitions/official/236754/codeshare/14155)
 - [배포 데이터 README](DACON_README.md)
 - [항목표](data/항목표.json)
