@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000072",
+  "items": [
+    "v5"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_060f8db97ce69bc0016ab62ad2c80087d18f376528f0ae4bd5",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 20895,
+    "input_tokens_details": {
+      "cache_write_tokens": 20892,
+      "cached_tokens": 0
+    },
+    "output_tokens": 702,
+    "output_tokens_details": {
+      "reasoning_tokens": 511
+    },
+    "total_tokens": 21597
+  },
+  "labels": {
+    "v5": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 312,176,154원의 통학버스 임차용역이며, 경상남도 본점 소재지를 참가자격으로 제한한다. 일반용역에는 시행규칙 제24조제2호나목을 적용해야 하나, 제공 자료에는 발주기관의 법 제5조제1항 적용 여부와 해당 행정안전부 고시금액이 없어 지역제한 허용금액 초과 여부를 확정할 수 없다. 국가계약의 2억 3천만원이나 기술용역의 3억 3천만원 기준을 대신 적용할 수 없다.",
+      "law_basis": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행규칙 제24조제2호나목"
+    }
+  },
+  "qa_issues": []
+}

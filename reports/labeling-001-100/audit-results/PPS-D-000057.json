@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000057",
+  "items": [
+    "v21"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_00bf571873d9c5b5016ab62a01143c87d1b2cb2d0ee7f00b34",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 17453,
+    "input_tokens_details": {
+      "cache_write_tokens": 17450,
+      "cached_tokens": 0
+    },
+    "output_tokens": 659,
+    "output_tokens_details": {
+      "reasoning_tokens": 465
+    },
+    "total_tokens": 18112
+  },
+  "labels": {
+    "v21": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "지방계약법 적용 일반용역으로 혼합방식 공동도급을 허용한다. 공고에는 구성원 수를 5개사 이내로 정했으나 구성원별 최소지분율은 명시하지 않았다. 제공된 발췌는 국가계약 기준뿐이므로 지방계약 혼합방식의 최소지분율과 공고 명시 의무를 확인할 수 없다. 지분율 미기재만으로 위반을 확정할 수 없다.",
+      "law_basis": "(계약예규) 공동계약운용요령 / 구성원별 계약참여 최소지분율(지방계약 기준 미제공)"
+    }
+  },
+  "qa_issues": []
+}

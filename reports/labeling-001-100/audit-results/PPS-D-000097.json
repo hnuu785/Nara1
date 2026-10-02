@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000097",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0d00a75ae4cf3b98016ab62b3257b487d1a78c7fc076eac271",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 6367,
+    "input_tokens_details": {
+      "cache_write_tokens": 6364,
+      "cached_tokens": 0
+    },
+    "output_tokens": 2020,
+    "output_tokens_details": {
+      "reasoning_tokens": 1850
+    },
+    "total_tokens": 8387
+  },
+  "labels": {
+    "v24": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "수의(단가)계약, 경기도 지역제한, 의약품도매상 업종코드 5307, 낙찰하한율 88% 및 개찰일이 메타와 일치한다. 메타의 77,600원은 본문의 기초단가와 같으며, 별도 구입예정총액 30,000,000원과 직접 비교하여 불일치로 볼 수 없다. 공고명의 금액 구간 표현도 단가·총액 기준이 명확하지 않아 명시적인 메타-본문 충돌로 확정할 수 없다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

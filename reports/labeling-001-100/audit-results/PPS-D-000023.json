@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000023",
+  "items": [
+    "v19"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_01de684761561f88016ab628474f0c87d197d213bc1cf3cd84",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 16512,
+    "input_tokens_details": {
+      "cache_write_tokens": 16509,
+      "cached_tokens": 0
+    },
+    "output_tokens": 630,
+    "output_tokens_details": {
+      "reasoning_tokens": 477
+    },
+    "total_tokens": 17142
+  },
+  "labels": {
+    "v19": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "본 건은 해외 사례탐방 용역이다. 항공권 확보(예약) 자료를 입찰참가자격 조건으로 요구하지만, 이는 배포 규정상 특수 성능·품질 물품구매의 제조사 물품공급·기술지원확약서에 해당하지 않는다. 입찰·평가방법에 대한 동의 확약서도 물품공급 확약서가 아니므로 v19는 비적용이다.",
+      "law_basis": "(계약예규) 정부 입찰·계약 집행기준 제5조의3"
+    }
+  },
+  "qa_issues": []
+}

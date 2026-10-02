@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000094",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_021b3b758362236a016ab62b1c53b087d1afdbfa86be705b3d",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 24120,
+    "input_tokens_details": {
+      "cache_write_tokens": 24117,
+      "cached_tokens": 0
+    },
+    "output_tokens": 971,
+    "output_tokens_details": {
+      "reasoning_tokens": 830
+    },
+    "total_tokens": 25091
+  },
+  "labels": {
+    "v24": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "사업예산 24,576,000원, 대구광역시 지역제한, 제한입찰, 규격·가격 동시입찰 및 게시·개찰일이 메타와 일치한다. 총액입찰은 제한경쟁과 다른 분류이며, 교육 관련 사업자등록 요건을 나라장터 면허·업종코드 제한과 동일시할 수 없다. 같은 의미의 값이 명시적으로 충돌하는 사항은 확인되지 않는다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

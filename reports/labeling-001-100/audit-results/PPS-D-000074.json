@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000074",
+  "items": [
+    "v5",
+    "v16"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_05decc55c684e166016ab62ae0364087d1974a97c28685b14d",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 35200,
+    "input_tokens_details": {
+      "cache_write_tokens": 35197,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1236,
+    "output_tokens_details": {
+      "reasoning_tokens": 890
+    },
+    "total_tokens": 36436
+  },
+  "labels": {
+    "v5": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 464,545,000원의 일반용역이며, 참가자격에 서울특별시 본점 소재지 제한이 있다. 지방계약법상 일반용역의 지역제한 기준은 법 제5조제1항 적용 여부에 따라 행정안전부장관 고시금액 또는 5억원이다. 제공 자료만으로 이 계약의 적용 구분과 해당 지방계약 고시금액을 확인할 수 없어 위반 여부를 확정할 수 없다.",
+      "law_basis": "지방자치단체를 당사자로 하는 계약에 관한 법률 시행규칙 제24조제2호나목"
+    },
+    "v16": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "중소기업자 제한 의무의 해당 금액 구간은 추정가격 1억원 이상 2억 3천만원 미만이다. 이 계약의 추정가격은 464,545,000원이므로 해당 구간을 벗어나 v16은 비적용이다.",
+      "law_basis": "중소기업제품 구매촉진 및 판로지원에 관한 법률 시행령 제2조의2제1항제2호 / 국가를 당사자로 하는 계약에 관한 법률 등의 재정경제부장관이 정하는 고시금액 1.가"
+    }
+  },
+  "qa_issues": []
+}

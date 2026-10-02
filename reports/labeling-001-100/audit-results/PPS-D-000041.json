@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000041",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_04114eecf2691d6e016ab6290468f087d1855653fdbf0c95ef",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 7928,
+    "input_tokens_details": {
+      "cache_write_tokens": 7925,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1124,
+    "output_tokens_details": {
+      "reasoning_tokens": 966
+    },
+    "total_tokens": 9052
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "1) 견적서 제출 마감일 전일까지 사업자등록증(종목 : 속기)을 보유한 업체",
+      "reason": "메타는 업종제한여부가 'N'이나, 공고문은 견적 참가자격을 사업자등록증상 종목이 '속기'인 업체로 제한하여 상충한다. 이는 평가자료나 첨부양식이 아닌 필수 참가조건이다. 시간당 단가 130,000원과 총사업예산의 차이는 불일치 근거로 삼지 않았다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

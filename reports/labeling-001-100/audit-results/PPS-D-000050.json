@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000050",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_09a84b1c2cf4b7ab016ab62955e15887d1a16df94729dad298",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 8789,
+    "input_tokens_details": {
+      "cache_write_tokens": 8786,
+      "cached_tokens": 0
+    },
+    "output_tokens": 534,
+    "output_tokens_details": {
+      "reasoning_tokens": 363
+    },
+    "total_tokens": 9323
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "모집 공고 2025. 1. 2.(금) ~ 2026. 1. 12.(월) 조달청 나라장터, 알리오 공시",
+      "reason": "메타의 공고게시일자는 2026.01.02이나, 공고문 모집시행 일정에는 모집 공고 시작일이 2025.01.02로 명시되어 연도가 불일치한다. 공고문 상단과 제안요청서에는 2026년으로 기재되어 있더라도 해당 일정표와 메타의 명시적 충돌은 존재한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

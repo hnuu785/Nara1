@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000068",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0c75603076d04b63016ab62ab2437887d1a752813b8f2b2d6b",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 24165,
+    "input_tokens_details": {
+      "cache_write_tokens": 24162,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1299,
+    "output_tokens_details": {
+      "reasoning_tokens": 1131
+    },
+    "total_tokens": 25464
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "3. 입찰참가자격\n\n가. 다음 각 호의 자격을 모두 갖춘 자만 입찰서를 제출할 수 있습니다.\n\n1) 방과후학교 또는 교육 관련 사업자등록을 한 자",
+      "reason": "메타의 업종제한여부는 'N'이나, 공고 본문은 방과후학교 또는 교육 관련 사업자등록을 필수 입찰참가자격으로 정하여 업종을 제한하고 있다. 이는 평가자료나 첨부 양식의 기재사항이 아닌 참가자격 조건으로, 메타와 상충한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

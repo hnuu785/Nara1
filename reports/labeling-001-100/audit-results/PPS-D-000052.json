@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000052",
+  "items": [
+    "v1",
+    "v12"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0cffc02b57d8c09c016ab6296bd87c87d1ba212bc22247de14",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 25595,
+    "input_tokens_details": {
+      "cache_write_tokens": 25592,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1234,
+    "output_tokens_details": {
+      "reasoning_tokens": 933
+    },
+    "total_tokens": 26829
+  },
+  "labels": {
+    "v1": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "참가자격의 유사행사 실적은 발주기관을 한정하지 않으며, 실적내역서도 민간기업 실적을 허용한다. 정부 기념행사 영상은 제안설명회에서 상영할 제출자료로 외주 제작물도 허용하므로, 이를 특정기관 실적 보유자만의 참가자격 제한으로 볼 수 없다.",
+      "law_basis": "국가계약법 시행규칙 제25조제1항"
+    },
+    "v12": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "기타행사기획및대행서비스의 직접생산 기준 충족 또는 증명서 보유를 참가자격으로 요구한다. 중소기업자간 경쟁제품이면 직접생산 확인 대상이지만, 제공 자료에는 해당 서비스의 지정 여부를 확인할 고시가 없다. 빈 매칭 결과만으로 일반제품이라고 단정할 수 없어 위반 여부를 확정할 수 없다.",
+      "law_basis": "중소기업제품 구매촉진 및 판로지원에 관한 법률 제7조·제9조"
+    }
+  },
+  "qa_issues": []
+}

@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000001",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0d24e5f20e0bd9c0016ab6278dfc7087d1b658fec5b546462c",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 19871,
+    "input_tokens_details": {
+      "cache_write_tokens": 19868,
+      "cached_tokens": 0
+    },
+    "output_tokens": 540,
+    "output_tokens_details": {
+      "reasoning_tokens": 342
+    },
+    "total_tokens": 20411
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "나. 입찰 공고일 전일부터 입찰일(낙찰자는 계약체결일)까지 주된 사업소(본사)를 대전광역시에 둔 업체이어야 하며, 지방세 국세를 체납이 없는 업체이여야 함.(공동수급시 대표사 : 대전광역시)",
+      "reason": "메타의 지역제한여부는 'N'이나, 공고문은 입찰참가자격으로 본사 소재지를 대전광역시로 제한하고 공동수급 시 대표사에도 해당 조건을 적용한다. 지역제한 여부가 명시적으로 불일치한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

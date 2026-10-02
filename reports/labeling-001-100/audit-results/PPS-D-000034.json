@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000034",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0455ce264eff1b6e016ab628999df887d1844cf226b620e51e",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 7768,
+    "input_tokens_details": {
+      "cache_write_tokens": 7765,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1197,
+    "output_tokens_details": {
+      "reasoning_tokens": 986
+    },
+    "total_tokens": 8965
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "나. 「국가를 당사자로 하는 계약에 관한 법률 시행령」제12조 및 동법시행규칙 제14조에 의해 석재제조 관련 사업자등록 또는 신고를 하고 석재 가공 등의 관련 자격증을 소지한 자(증빙서류 별도 제출)로 붙임 과업내용서에 의하여 납품이 가능한 업체여야 합니다.",
+      "reason": "메타의 업종제한여부는 'N'이나, 공고문은 석재제조 관련 사업자등록·신고 및 석재 가공 관련 자격증 소지를 참가자격으로 요구한다. 단순 평가자료나 첨부양식이 아닌 필수 업종·자격 조건이므로 제한 유무가 상충한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}
