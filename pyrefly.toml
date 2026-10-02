@@ -1,0 +1,7 @@
+# Pyrefly configuration
+# 모든 미설치 모듈의 import 에러 비활성화 및 자동 Any 처리
+
+replace-imports-with-any = ["*"]
+
+[errors]
+missing-import = false

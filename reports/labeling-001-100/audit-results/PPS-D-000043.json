@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000043",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0692ed7868e713ed016ab62926e22887d19f0eefb8af2871e1",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 7505,
+    "input_tokens_details": {
+      "cache_write_tokens": 7502,
+      "cached_tokens": 0
+    },
+    "output_tokens": 414,
+    "output_tokens_details": {
+      "reasoning_tokens": 273
+    },
+    "total_tokens": 7919
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "아. 개찰일시 및 장소: 2025. 1. 8.(목) 13:00, [수요기관(초등학교)] 견적 집행관 PC",
+      "reason": "메타의 개찰예정일자는 2026-01-08이나, 공고문은 개찰일시를 2025-01-08 13:00로 명시한다. 동일한 개찰 일정의 연도가 명시적으로 충돌한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

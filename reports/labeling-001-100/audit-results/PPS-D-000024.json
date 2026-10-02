@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000024",
+  "items": [
+    "v5",
+    "v16"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_052a6030dae337bf016ab62850555c87d1ac6265fa2ef1492f",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 36846,
+    "input_tokens_details": {
+      "cache_write_tokens": 36843,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1191,
+    "output_tokens_details": {
+      "reasoning_tokens": 847
+    },
+    "total_tokens": 38037
+  },
+  "labels": {
+    "v5": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 409,703,400원의 일반용역에 울산광역시 본점 소재지 제한이 있다. 지방계약법 시행규칙은 적용 기관에 따라 행정안전부장관 고시금액 또는 5억원을 기준으로 구분한다. 제공 자료에는 해당 교육기관의 법 제5조제1항 적용 여부와 행정안전부 고시금액이 없어 위반 여부를 확정할 수 없다. 국가계약의 2억 3천만원 기준을 대신 적용할 수는 없다.",
+      "law_basis": "지방계약법 시행규칙 제24조제2호나목"
+    },
+    "v16": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 409,703,400원은 배포된 국가계약 물품·용역 고시금액 230,000,000원 이상이다. 따라서 이 항목의 적용 구간인 '1억원 이상 고시금액 미만'에 해당하지 않아 중소기업 제한 부재 위반으로 볼 수 없다.",
+      "law_basis": "중소기업제품 구매촉진 및 판로지원에 관한 법률 시행령 제2조의2제1항제2호; 재정경제부장관 고시금액 제1호가목"
+    }
+  },
+  "qa_issues": []
+}

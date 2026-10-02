@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000096",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_008af6c633640ada016ab62b1ed67c87d1a861868d9799c0c6",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 13403,
+    "input_tokens_details": {
+      "cache_write_tokens": 13400,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1357,
+    "output_tokens_details": {
+      "reasoning_tokens": 1158
+    },
+    "total_tokens": 14760
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "나. 가격개찰 일시 및 장소\n\n- 일시 : 제안서 기술평가 후 개찰\n\n- 장소 : 국가종합전자조달시스템(나라장터)",
+      "reason": "메타의 개찰예정일자는 2026-01-23이나, 공고문은 가격개찰을 제안서 기술평가 후로 명시한다. 본문상 1차 제안서 심사는 1월 27일, 2차 PT 심사는 1월 29일이므로, 기술평가 후인 가격개찰 시점과 메타의 개찰예정일이 충돌한다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

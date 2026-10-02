@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000080",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_038368517b45a8b6016ab62af0090c87d1a2f2fa933f59b586",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 7360,
+    "input_tokens_details": {
+      "cache_write_tokens": 7357,
+      "cached_tokens": 0
+    },
+    "output_tokens": 312,
+    "output_tokens_details": {
+      "reasoning_tokens": 89
+    },
+    "total_tokens": 7672
+  },
+  "labels": {
+    "v24": {
+      "label": 1,
+      "doc_id": "D0",
+      "evidence": "아. ｢고압가스안전관리법｣에 의한 고압가스특정제조(1473) 또는 고압가스일반제조(4604) 또는 고압가스충전(4605) 또는 고압가스판매업(4608)을 등록한 업체",
+      "reason": "메타의 면허업종제한목록은 고압가스특정제조(1473), 고압가스충전(4605), 고압가스판매업(4608) 중 하나를 요구하지만, 공고문 참가자격은 고압가스일반제조(4604)도 허용한다. 동일한 참가자격의 허용 업종 범위가 명시적으로 다르다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}

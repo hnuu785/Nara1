@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000040",
+  "items": [
+    "v18"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0ff7759f428e43c7016ab628fdf47887d194fad22c23f34f8c",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 14859,
+    "input_tokens_details": {
+      "cache_write_tokens": 14856,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1686,
+    "output_tokens_details": {
+      "reasoning_tokens": 1499
+    },
+    "total_tokens": 16545
+  },
+  "labels": {
+    "v18": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격은 47,153,636원으로 1억원 미만이며, 참가자격에 소기업·소상공인 제한은 없다. 다만 본 건은 건설폐기물 처리 소액수의계약으로, 다른 법령상 수의계약 허용에 따른 우선조달 예외 적용을 검토해야 한다. 해당 수의계약의 법정 허용 요건을 확인할 규정이 제공되지 않아 제한 누락을 명백한 위반으로 확정할 수 없다.",
+      "law_basis": "중소기업제품 구매촉진 및 판로지원에 관한 법률 시행령 제2조의2제1항제1호, 제2조의3제1항제3호"
+    }
+  },
+  "qa_issues": []
+}

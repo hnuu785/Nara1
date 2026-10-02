@@ -1,0 +1,40 @@
+{
+  "id": "PPS-D-000037",
+  "items": [
+    "v5",
+    "v16"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_01dbbe0c2fabe479016ab628e2ab9c87d19d931486f1f573be",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 34751,
+    "input_tokens_details": {
+      "cache_write_tokens": 34748,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1210,
+    "output_tokens_details": {
+      "reasoning_tokens": 881
+    },
+    "total_tokens": 35961
+  },
+  "labels": {
+    "v5": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 297,860,000원의 일반용역에 서울특별시 본점 소재지 제한이 있다. 지방계약법상 해당 한도는 기관의 법 제5조제1항 적용 여부에 따라 행정안전부 고시금액 또는 5억원이다. 제공 자료에는 해당 교육기관의 적용 여부와 행정안전부 고시금액이 없어 한도 초과를 확정할 수 없다. 국가계약 고시금액 2억3천만원을 대신 적용할 수는 없다.",
+      "law_basis": "지방계약법 시행규칙 제24조제2호나목"
+    },
+    "v16": {
+      "label": 0,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "추정가격 297,860,000원은 배포된 국가계약 물품·용역 고시금액 230,000,000원 이상이다. 따라서 중소기업자 간 제한경쟁 의무가 적용되는 '1억원 이상 고시금액 미만' 구간에 해당하지 않아 이 항목은 비적용이다.",
+      "law_basis": "판로지원법 시행령 제2조의2제1항제2호; 국가계약 고시금액 1.가"
+    }
+  },
+  "qa_issues": []
+}

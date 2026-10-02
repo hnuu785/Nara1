@@ -1,0 +1,32 @@
+{
+  "id": "PPS-D-000027",
+  "items": [
+    "v24"
+  ],
+  "model": "gpt-6-astra",
+  "prompt_version": "2026-09-25-audit-v1",
+  "response_id": "resp_0759cfb3388db055016ab6285bd3ac87d18e8c76e50909a272",
+  "status": "completed",
+  "usage": {
+    "input_tokens": 4551,
+    "input_tokens_details": {
+      "cache_write_tokens": 4548,
+      "cached_tokens": 0
+    },
+    "output_tokens": 805,
+    "output_tokens_details": {
+      "reasoning_tokens": 627
+    },
+    "total_tokens": 5356
+  },
+  "labels": {
+    "v24": {
+      "label": 2,
+      "doc_id": "",
+      "evidence": "",
+      "reason": "금액 7,397,500원, 소액수의견적, 낙찰하한율 90%, 개찰일 및 유전자검사기관 업종코드는 메타와 공고문이 일치한다. 다만 메타의 광주광역시 지역제한에 대응하는 참가업체 소재지 조건은 본문에 명시되지 않았으며, 기관 주소를 지역제한으로 볼 수 없다. 과업지시서의 ‘등록업체 혹은 지역대리점’도 해당 업종 미등록자의 참가를 허용하는지 불명확하므로 명시적 충돌을 확정하기 어렵다.",
+      "law_basis": "메타-본문 대조"
+    }
+  },
+  "qa_issues": []
+}
